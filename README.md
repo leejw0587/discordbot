@@ -1,10 +1,3 @@
-**[ To-Do ]**
+For Personal Server
 
-- 통화방 커스텀 기능
-- 레벨링 시스템
-- Helpers-Colors.py-Class color
-- Leaderboard 시스템 (레벨, 페리도트)
-
-<Leveling System>
-/level set 
-/xp set
+Invite : https://discord.com/oauth2/authorize?&client_id=1070946297470779412&scope=bot+applications.commands&permissions=8

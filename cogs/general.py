@@ -26,7 +26,7 @@ class General(commands.Cog, name="general"):
     async def help(self, context: Context) -> None:
         prefix = self.bot.config["prefix"]
         embed = discord.Embed(
-            title="Help", description="명령어 목록: ", color=0x9C84EF)
+            title="Help", description="명령어 목록: ", color=discord.Color.purple())
         for i in self.bot.cogs:
             cog = self.bot.get_cog(i.lower())
             commands = cog.get_commands()
@@ -47,7 +47,7 @@ class General(commands.Cog, name="general"):
         embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
-            color=0x9C84EF
+            color=discord.Color.random()
         )
         await context.send(embed=embed)
 
@@ -63,7 +63,7 @@ class General(commands.Cog, name="general"):
         embed = discord.Embed(
             title="이름",
             description=f"봇의 이름을 `{name}`(으)로 설정하였습니다.",
-            color=0x9C84EF
+            color=discord.Color.gold()
         )
         await context.send(embed=embed)
 

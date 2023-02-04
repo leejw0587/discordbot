@@ -122,7 +122,7 @@ class Owner(commands.Cog, name="owner"):
         :param context: The hybrid command context.
         :param message: The message that should be repeated by the bot.
         """
-        await context.send(message)
+        await context.channel.send(message)
 
     @commands.hybrid_command(
         name="embed",
@@ -139,7 +139,7 @@ class Owner(commands.Cog, name="owner"):
             description=message,
             color=0x9C84EF
         )
-        await context.send(embed=embed)
+        await context.channel.send(embed=embed)
 
 
 async def setup(bot):

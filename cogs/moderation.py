@@ -31,14 +31,14 @@ class Moderation(commands.Cog, name="moderation"):
             embed = discord.Embed(
                 title="닉네임 변경 완료!",
                 description=f"`{member}`의 닉네임을 `{nickname}`(으)로 설정하였습니다!",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
         except:
             embed = discord.Embed(
                 title="Error!",
                 description="오류가 발생하였습니다. 다시 시도해주세요.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
