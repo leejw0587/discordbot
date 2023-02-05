@@ -82,7 +82,7 @@ async def on_ready() -> None:
 
 @tasks.loop(minutes=1.0)
 async def status_task() -> None:
-    statuses = ["이지원이 만듦"]
+    statuses = ["이지원의 노예"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
@@ -143,7 +143,7 @@ async def on_command_error(context: Context, error) -> None:
 
         embed = discord.Embed(
             title="Error!",
-            description="봇 주인만 이 명령어를 사용할 수 있습니다.",
+            description="관리자만 이 명령어를 사용할 수 있습니다.",
             color=0xE02B2B
         )
         await context.send(embed=embed)
