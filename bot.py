@@ -132,13 +132,6 @@ async def on_command_error(context: Context, error) -> None:
             color=0xE02B2B
         )
         await context.send(embed=embed)
-    elif isinstance(error, exceptions.UserBlacklisted):
-        embed = discord.Embed(
-            title="Error!",
-            description="당신은 블랙리스트에 포함되어 있습니다.",
-            color=0xE02B2B
-        )
-        await context.send(embed=embed)
     elif isinstance(error, exceptions.UserNotOwner):
 
         embed = discord.Embed(
