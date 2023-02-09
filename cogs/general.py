@@ -27,7 +27,17 @@ class General(commands.Cog, name="general"):
             msg = random.choice(react)
             return await message.channel.send(msg)
         elif "얼굴" in message.content:
-            msg = random.choice(react)
+            if message.author.id == 612252642734899210:  # 우지환
+                msg = "모공 3미터"
+            elif message.author.id == 476971304059142145:  # 박제희
+                msg = "외국인"
+            elif message.author.id == 682994068103757840:  # 박경덕
+                msg = " "
+            elif message.author.id == 822839709109059604:  # 이동건
+                msg = "강남"
+            elif message.author.id == 389354491410907157:  # 정인철
+                msg = "입술 3미터"
+
             return await message.channel.send(msg)
 
     @commands.hybrid_command(
