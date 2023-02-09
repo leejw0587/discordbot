@@ -37,7 +37,8 @@ class General(commands.Cog, name="general"):
                 msg = "강남"
             elif message.author.id == 389354491410907157:  # 정인철
                 msg = "입술 3미터"
-
+            else:
+                msg = random.choice(react)
             return await message.channel.send(msg)
 
     @commands.hybrid_command(
