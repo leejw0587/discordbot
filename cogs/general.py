@@ -19,6 +19,17 @@ class General(commands.Cog, name="general"):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.Cog.listener()
+    async def on_message(message: discord.Message) -> None:
+        react = ['시발', '개창', '따잇', '꺄웃', '끼얏호', '료낏짜']
+
+        if "인생" in message.content:
+            msg = random.choice(react)
+            return await message.channel.send(msg)
+        elif "얼굴" in message.content:
+            msg = random.choice(react)
+            return await message.channel.send(msg)
+
     @commands.hybrid_command(
         name="help",
         description="실행 가능한 모든 커맨드를 표시합니다."
