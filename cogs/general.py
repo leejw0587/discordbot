@@ -28,15 +28,15 @@ class General(commands.Cog, name="general"):
             return await message.channel.send(msg)
         elif "얼굴" in message.content:
             if message.author.id == 612252642734899210:  # 우지환
-                msg = "모공 3미터"
+                msg = f"모공 {random.randint(3, 1000)}미터"
             elif message.author.id == 476971304059142145:  # 박제희
                 msg = "외국인"
             elif message.author.id == 682994068103757840:  # 박경덕
-                msg = " "
+                msg = "아 어쩌라고"
             elif message.author.id == 822839709109059604:  # 이동건
                 msg = "강남"
             elif message.author.id == 389354491410907157:  # 정인철
-                msg = "입술 3미터"
+                msg = f"입술 {random.randint(3, 1000)}미터"
             else:
                 msg = random.choice(react)
             return await message.channel.send(msg)
