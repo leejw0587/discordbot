@@ -20,7 +20,7 @@ class General(commands.Cog, name="general"):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_message(message: discord.Message) -> None:
+    async def on_message(self, message) -> None:
         react = ['시발', '개창', '따잇', '꺄웃', '끼얏호', '료낏짜']
 
         if "인생" in message.content:
