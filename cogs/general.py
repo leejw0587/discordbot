@@ -43,8 +43,6 @@ class General(commands.Cog, name="general"):
             else:
                 msg = random.choice(react)
             return await message.channel.send(msg)
-        else:
-            pass
 
     @commands.hybrid_command(
         name="help",
