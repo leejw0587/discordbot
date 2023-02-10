@@ -26,7 +26,8 @@ class General(commands.Cog, name="general"):
         if "인생" in message.content:
             msg = random.choice(react)
             return await message.channel.send(msg)
-        elif "얼굴" in message.content:
+
+        elif "얼굴" in message.content or "면상" in message.content:
             if message.author.id == 612252642734899210:  # 우지환
                 msg = f"모공 {random.randint(3, 1000)}미터"
             elif message.author.id == 476971304059142145:  # 박제희
@@ -37,9 +38,13 @@ class General(commands.Cog, name="general"):
                 msg = "강남"
             elif message.author.id == 389354491410907157:  # 정인철
                 msg = f"입술 {random.randint(3, 1000)}미터"
+            elif message.author.id == 424546094182039552:  # 이지원
+                msg = "거인"
             else:
                 msg = random.choice(react)
             return await message.channel.send(msg)
+        else:
+            pass
 
     @commands.hybrid_command(
         name="help",
