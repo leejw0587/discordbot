@@ -82,7 +82,8 @@ async def on_ready() -> None:
 
 @tasks.loop(minutes=1.0)
 async def status_task() -> None:
-    statuses = ["이지원의 노예"]
+    statuses = ["이지원이랑", "정인철이랑", "박경덕이랑",
+                "이동건이랑", "우지환이랑", "박충만이랑", "이지홍이랑", "박제희랑"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 

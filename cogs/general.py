@@ -44,6 +44,21 @@ class General(commands.Cog, name="general"):
                 msg = random.choice(react)
             return await message.channel.send(msg)
 
+        elif "키" in message.conent:
+            if message.author.id == 822839709109059604:  # 이동건
+                msg = "166cm"
+                return await message.channel.send(msg)
+
+        elif "몸무게" in message.conent:
+            if message.author.id == 822839709109059604:  # 이동건
+                msg = "70kg"
+                return await message.channel.send(msg)
+
+        elif "몸매" in message.conent:
+            if message.author.id == 822839709109059604:  # 이동건
+                msg = "166cm에 70kg"
+                return await message.channel.send(msg)
+
     @commands.hybrid_command(
         name="help",
         description="실행 가능한 모든 커맨드를 표시합니다."
