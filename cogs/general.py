@@ -44,7 +44,7 @@ class General(commands.Cog, name="general"):
                 msg = random.choice(react)
             return await message.channel.send(msg)
 
-        elif "키" in message.conent:
+        elif "키" in message.content:
             if message.author.id == 822839709109059604:  # 이동건
                 msg = "166cm"
                 return await message.channel.send(msg)
