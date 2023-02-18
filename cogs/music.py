@@ -381,6 +381,7 @@ class Music(commands.Cog, name="music"):
             try:
                 await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`을(를) 건너뜁니다."))
                 await player.play(next_track)
+                self.repeat = False
             except:
                 return await context.reply(embed=embeds.EmbedRed("Music", "재생 중 문제가 발생하였습니다."))
 
