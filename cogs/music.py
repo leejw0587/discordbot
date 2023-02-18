@@ -75,14 +75,18 @@ class Music(commands.Cog, name="music"):
                     await player.play(next_track)
                 except:
                     return await channel.send(embed=embeds.EmbedRed("Music", "재생 도중 문제가 발생하였습니다."))
-                embed = discord.Embed(
-                    title=f":notes: {next_track.title}", color=discord.Color.blurple())
-                embed.set_thumbnail(url=next_track.thumbnail)
-                embed.add_field(name="곡 길이", value=str(
-                    datetime.timedelta(seconds=int(next_track.length))), inline=True)
-                embed.add_field(
-                    name="링크", value=f"[클릭]({next_track.uri})", inline=True)
-                await channel.send(embed=embed)
+
+                try:
+                    embed = discord.Embed(
+                        title=f":notes: {next_track.title}", color=discord.Color.blurple())
+                    embed.set_thumbnail(url=next_track.thumbnail)
+                    embed.add_field(name="곡 길이", value=str(
+                        datetime.timedelta(seconds=int(next_track.length))), inline=True)
+                    embed.add_field(
+                        name="링크", value=f"[클릭]({next_track.uri})", inline=True)
+                    await channel.send(embed=embed)
+                except:
+                    return await channel.send(embed=embeds.EmbedRed("Music", "더 이상 재생할 곡이 없습니다."))
             else:
                 pass
         else:
