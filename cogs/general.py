@@ -61,7 +61,7 @@ class General(commands.Cog, name="general"):
                 return await message.channel.send(msg)
 
         elif "모공" in message.content:
-            msg_list = [random.randint(1, 100)+"m 깊이", "기름줄줄", "👃"]
+            msg_list = [str(random.randint(1, 100))+"m 깊이", "기름줄줄", "👃"]
             return await message.channel.send(random.choice(msg_list))
 
         else:
