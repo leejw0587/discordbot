@@ -60,6 +60,10 @@ class General(commands.Cog, name="general"):
                 msg = "166cm에 70kg"
                 return await message.channel.send(msg)
 
+        elif "모공" in message.content:
+            msg_list = [random.randint(1, 100), "기름줄줄", "👃"]
+            return await message.channel.send(random.choice(msg_list))
+
         else:
             pass
 
