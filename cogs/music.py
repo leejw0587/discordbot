@@ -86,7 +86,8 @@ class Music(commands.Cog, name="music"):
                         name="링크", value=f"[클릭]({next_track.uri})", inline=True)
                     await channel.send(embed=embed)
                 except:
-                    return await channel.send(embed=embeds.EmbedBlurple("Music", "더 이상 재생할 곡이 없습니다."))
+                    return
+                    # return await channel.send(embed=embeds.EmbedBlurple("Music", "더 이상 재생할 곡이 없습니다."))
             else:
                 pass
         else:
