@@ -119,7 +119,7 @@ class General(commands.Cog, name="general"):
         name="meal",
         description="급식을 알려줍니다."
     )
-    async def meal(self, context: Context, date: typing.Literal['오늘', '내일', 'test']):
+    async def meal(self, context: Context, date: typing.Literal['오늘', '내일', '모레']):
         today = datetime.datetime.today()
 
         if date == '오늘':
@@ -129,10 +129,10 @@ class General(commands.Cog, name="general"):
             tomorrow = today + datetime.timedelta(days=1)
             date = tomorrow.strftime('%Y%m%d')
             date_frmt = tomorrow.strftime('%Y-%m-%d')
-
-        elif date == 'test':
-            date = "20230302"
-            date_frmt = "2023-03-02"
+        elif date == '모레':
+            tomorrow = today + datetime.timedelta(days=2)
+            date = tomorrow.strftime('%Y%m%d')
+            date_frmt = tomorrow.strftime('%Y-%m-%d')
 
         try:
             url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=585fb4c9578b448496b2977b7e51fa24&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=D10&SD_SCHUL_CODE=7240061" + \
