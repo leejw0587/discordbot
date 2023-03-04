@@ -6,6 +6,8 @@ import datetime
 import asyncio
 import typing
 import requests
+import openai
+import re
 
 import aiohttp
 import discord
@@ -19,9 +21,13 @@ from helpers import checks
 class General(commands.Cog, name="general"):
     def __init__(self, bot):
         self.bot = bot
+        openai.api_key = self.bot.config["openai_api_key"]
 
     @commands.Cog.listener()
     async def on_message(self, message) -> None:
+        if message.author == self.bot.user or message.author.bot:
+            return
+
         react = ['시발', '개창', '따잇', '꺄웃', '끼얏호', '료낏짜']
 
         if "인생" in message.content:
@@ -65,7 +71,18 @@ class General(commands.Cog, name="general"):
             return await message.channel.send(random.choice(msg_list))
 
         else:
-            pass
+            if message.channel.id == 1081478211403272264:
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system",
+                         "content": "You are a friendly chatbot. Your name is '우지한'."},
+                        {"role": "user", "content": message.content},
+                    ]
+                )
+
+                botAnswer = response['choices'][0]['message']['content']
+                return await message.channel.send(botAnswer)
 
     @commands.hybrid_command(
         name="help",
