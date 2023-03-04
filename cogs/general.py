@@ -72,17 +72,17 @@ class General(commands.Cog, name="general"):
 
         else:
             if message.channel.id == 1081478211403272264:
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "system",
-                         "content": "You are a friendly chatbot. Your name is '우지한'."},
-                        {"role": "user", "content": message.content},
-                    ]
-                )
-
-                botAnswer = response['choices'][0]['message']['content']
-                return await message.channel.send(botAnswer)
+                async with message.channel.typing():
+                    response = openai.ChatCompletion.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "system",
+                             "content": "You are a friendly chatbot. Your name is '우지한'."},
+                            {"role": "user", "content": message.content},
+                        ]
+                    )
+                    botAnswer = response['choices'][0]['message']['content']
+                    return await message.channel.send(botAnswer)
 
     @commands.hybrid_command(
         name="help",
