@@ -133,10 +133,10 @@ class General(commands.Cog, name="general"):
         await context.send(embed=embed)
 
     @commands.hybrid_command(
-        name="meal",
+        name="급식",
         description="급식을 알려줍니다."
     )
-    async def meal(self, context: Context, date: typing.Literal['오늘', '내일', '모레']):
+    async def 급식(self, context: Context, date: typing.Literal['오늘', '내일', '모레']):
         today = datetime.datetime.today()
 
         if date == '오늘':
@@ -175,6 +175,41 @@ class General(commands.Cog, name="general"):
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="수온",
+        description="한강 수온을 알려줍니다."
+    )
+    async def 수온(self, context: Context):
+        url = "http://openapi.seoul.go.kr:8088/79616975466c656532375648526c4c/json/WPOSInformationTime/1/5/"
+        response = requests.get(url)
+        contents = response.text
+
+        json_data = json.loads(contents)
+        temp = json_data['WPOSInformationTime']['row'][4]['W_TEMP']
+        date = json_data['WPOSInformationTime']['row'][4]['MSR_DATE']
+
+        tempInt = float(temp)
+        if tempInt <= 10:
+            infoMsg = "차갑네요."
+        elif tempInt <= 16:
+            infoMsg = "조금 차갑네요."
+        elif tempInt <= 26:
+            infoMsg = "미지근하네요."
+        elif tempInt >= 27:
+            infoMsg = "따뜻하네요."
+        else:
+            infoMsg = ""
+
+        embed = discord.Embed(
+            title="현재 한강 수온",
+            description=f"**온도: {temp}°C**\n{infoMsg}",
+            color=discord.Color.blue()
+        )
+        embed.set_thumbnail(
+            url="https://cdn.discordapp.com/attachments/1070947782472503296/1091948893824110662/istockphoto-481251608-612x612.jpg")
+        embed.timestamp = datetime.datetime.utcnow()
+        await context.send(embed=embed)
 
 
 async def setup(bot):
