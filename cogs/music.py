@@ -15,9 +15,10 @@ class Music(commands.Cog, name="music"):
     def __init__(self, bot):
         self.bot = bot
         self.queue = []
+        self.queue_history = []
         self.position = 0
         self.repeat = False
-        self.repeatMode = "ONE"
+        self.repeatMode = "ONE"  # ONE, ALL
         self.playingTextChannel = 0
 
     @commands.Cog.listener()
@@ -54,6 +55,7 @@ class Music(commands.Cog, name="music"):
     @commands.Cog.listener()
     async def on_wavelink_track_start(self, player: wavelink.Player, track: wavelink.Track):
         try:
+            self.queue_history.append(self.queue[0])
             self.queue.pop(0)
         except:
             pass
@@ -62,7 +64,13 @@ class Music(commands.Cog, name="music"):
     async def on_wavelink_track_end(self, player: wavelink.Player, track: wavelink.Track, reason):
         if self.repeat == True:
             try:
-                await player.play(track)
+                if self.repeatMode == "ONE":
+                    await player.play(track)
+                elif self.repeatMode == "ALL":
+                    if len(self.queue) == self.queue:
+                        await player.play()
+                        self.queue.count
+
             except:
                 return await channel.send(embed=embeds.EmbedRed("Music", "재생 도중 문제가 발생하였습니다."))
 
@@ -443,7 +451,8 @@ class Music(commands.Cog, name="music"):
         name='loop',
         description='현재 노래에 대해 반복재생 여부를 설정합니다.'
     )
-    async def loop(self, context: Context):
+    @app_commands.describe(type='반복 종류')
+    async def loop(self, context: Context, type: typing.Literal['한곡', '전체']):
         node = wavelink.NodePool.get_node()
         player = node.get_player(context.guild)
 
@@ -454,9 +463,14 @@ class Music(commands.Cog, name="music"):
                 if self.repeat == True:
                     self.repeat = False
                     await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`의 반복재생을 종료합니다."))
-                else:
+                elif type == "한곡":
                     self.repeat = True
+                    self.repeatMode = "ONE"
                     await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`을(를) 반복재생합니다."))
+                elif type == "전체":
+                    self.repeat = True
+                    self.repeatMode = "ALL"
+                    await context.reply(embed=embeds.EmbedBlurple("Music", f"전체 재생 목록을 반복재생합니다."))
             except:
                 return await context.reply(embed=embeds.EmbedRed("Music", "반복재생 중 문제가 발생하였습니다."))
 
