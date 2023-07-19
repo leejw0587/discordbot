@@ -29,24 +29,10 @@ class Music(commands.Cog, name="music"):
     async def on_voice_state_update(self, member, before, after):
         if not member.id == self.bot.user.id:
             return
-
         elif before.channel is None:
             node = wavelink.NodePool.get_node()
             player = node.get_player(after.channel.guild)
-
             voice = after.channel.guild.voice_client
-            time = 0
-            while True:
-                await asyncio.sleep(1)
-                time = time + 1
-                if voice.is_playing() and not voice.is_paused():
-                    time = 0
-                if time == 10:
-                    await voice.disconnect()
-                    self.queue.clear()
-                    await player.stop()
-                if not voice.is_connected():
-                    break
 
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
@@ -95,7 +81,6 @@ class Music(commands.Cog, name="music"):
                     await channel.send(embed=embed)
                 except:
                     return
-                    # return await channel.send(embed=embeds.EmbedBlurple("Music", "더 이상 재생할 곡이 없습니다."))
             else:
                 pass
         else:
@@ -280,7 +265,8 @@ class Music(commands.Cog, name="music"):
 
     @commands.hybrid_command(
         name="nowplaying",
-        description="현재 재생중인 음악을 보여줍니다."
+        description="현재 재생중인 음악을 보여줍니다.",
+        aliases=["np"]
     )
     async def now_playing(self, context: Context):
         node = wavelink.NodePool.get_node()
@@ -312,7 +298,6 @@ class Music(commands.Cog, name="music"):
     @commands.hybrid_command(
         name="search",
         description="노래 검색 결과를 직접 선택하여 재생합니다."
-
     )
     async def search(self, context: Context, *, query: str):
         try:
@@ -403,49 +388,54 @@ class Music(commands.Cog, name="music"):
                 name="링크", value=f"[클릭]({next_track.uri})", inline=True)
             await context.channel.send(embed=embed)
         else:
+            self.queue.clear()
+            await player.stop()
             await context.reply(embed=embeds.EmbedRed("Music", "다음에 재생할 노래가 없습니다."))
 
-    # this command would queue a song if some args(search) is provided else it would just show the queue
     @commands.hybrid_command(
         name="queue",
         description="재생 목록을 보여줍니다."
     )
-    async def queue(self, context: Context, *, search=None):
+    async def queue(self, context: Context):
         node = wavelink.NodePool.get_node()
         player = node.get_player(context.guild)
 
-        if search is None:
-            if not len(self.queue) == 0:
-                embed = discord.Embed(
-                    title=f":notes: {player.track}" if player.is_playing else "재생목록: ",
-                    description="\n".join(f"**{i+1}. {track}**" for i, track in enumerate(self.queue[:10])) if not player.is_playing else "**재생목록: **\n"+"\n".join(
-                        f"**{i+1}. {track}**" for i, track in enumerate(self.queue[:10])),
-                    color=discord.Color.blurple()
-                )
-                return await context.reply(embed=embed)
-            else:
-                return await context.reply(embed=embeds.EmbedRed("Music", "재생목록이 비어있습니다."))
+        if not len(self.queue) == 0:
+            time = 0
+            for i, track in enumerate(self.queue):
+                time += track.length
+
+            time = datetime.timedelta(seconds=time)
+            embed = discord.Embed(
+                title=f":notes: {player.track}" if player.is_playing else f"재생목록 ({time}): ",
+                description="\n".join(f"**{i+1}. {track}**" for i, track in enumerate(self.queue)) if not player.is_playing else f"**재생목록 ({time}): **\n"+"\n".join(
+                    f"**{i+1}. {track}**" for i, track in enumerate(self.queue)),
+                color=discord.Color.blurple()
+            )
+            return await context.reply(embed=embed)
         else:
-            try:
-                track = await wavelink.YoutubeTrack.search(query=search, return_first=True)
-            except:
-                return await context.reply(embed=embeds.EmbedRed("Music", "검색 중 문제가 발생하였습니다."))
+            return await context.reply(embed=embeds.EmbedRed("Music", "재생목록이 비어있습니다."))
+        # else:
+        #     try:
+        #         track = await wavelink.YoutubeTrack.search(query=search, return_first=True)
+        #     except:
+        #         return await context.reply(embed=embeds.EmbedRed("Music", "검색 중 문제가 발생하였습니다."))
 
-            if not context.voice_client:
-                vc: wavelink.Player = await context.author.voice.channel(cls=wavelink.Player)
-                await player.connect(context.author.voice.channel)
-            else:
-                vc: wavelink.Player = context.voice_client
+        #     if not context.voice_client:
+        #         vc: wavelink.Player = await context.author.voice.channel(cls=wavelink.Player)
+        #         await player.connect(context.author.voice.channel)
+        #     else:
+        #         vc: wavelink.Player = context.voice_client
 
-            if not vc.isp_playing():
-                try:
-                    await vc.play(track)
-                except:
-                    return await context.reply(embed=embeds.EmbedRed("Music", "재생 중 문제가 발생하였습니다."))
-            else:
-                self.queue.append(track)
+        #     if not vc.isp_playing():
+        #         try:
+        #             await vc.play(track)
+        #         except:
+        #             return await context.reply(embed=embeds.EmbedRed("Music", "재생 중 문제가 발생하였습니다."))
+        #     else:
+        #         self.queue.append(track)
 
-            await context.reply(embed=embeds.EmbedBlurple("Music", f"{track.title}을(를) 재생목록에 추가하였습니다."))
+        #     await context.reply(embed=embeds.EmbedBlurple("Music", f"{track.title}을(를) 재생목록에 추가하였습니다."))
 
     @commands.hybrid_command(
         name='loop',
@@ -474,6 +464,24 @@ class Music(commands.Cog, name="music"):
             except:
                 return await context.reply(embed=embeds.EmbedRed("Music", "반복재생 중 문제가 발생하였습니다."))
 
+    @commands.hybrid_command(
+        name='remove',
+        description='재생 목록에서 특정 노래를 제거합니다.'
+    )
+    @app_commands.describe(number="제거할 노래의 번호")
+    async def remove(self, context: Context, number: int):
+        node = wavelink.NodePool.get_node()
+        player = node.get_player(context.guild)
+
+        if number <= 0:
+            return await context.reply(embed=embeds.EmbedRed("Music", "1 이상의 정수만 입력 가능합니다."))
+        else:
+            try:
+                removed_track = self.queue.pop(number-1)
+                return await context.reply(embed=embeds.EmbedBlurple("Music", f"`{removed_track.title}`을 재생목록에서 삭제하였습니다."))
+            except:
+                return await context.reply(embed=embeds.EmbedRed("Music", "삭제 도중 문제가 발생하였습니다."))
+        
 
 async def setup(bot):
     await bot.add_cog(Music(bot))
