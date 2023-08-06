@@ -74,18 +74,9 @@ async def on_ready() -> None:
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     print("-------------------")
-    status_task.start()
     if config["sync_commands_globally"]:
         print("Syncing commands globally...")
         await bot.tree.sync()
-
-
-@tasks.loop(minutes=1.0)
-async def status_task() -> None:
-    statuses = ["이지원이랑", "정인철이랑", "박경덕이랑",
-                "이동건이랑", "우지환이랑", "박충만이랑", "이지홍이랑", "박제희랑"]
-    await bot.change_presence(activity=discord.Game(random.choice(statuses)))
-
 
 @bot.event
 async def on_message(message: discord.Message) -> None:
@@ -111,10 +102,10 @@ async def on_command_completion(context: Context) -> None:
 
     if context.guild is not None:
         print(
-            f"[INFO] {timecode} | Executed {executed_command} command by {context.author}")
+            f"[INFO] {timecode} | Executed {executed_command} command by {context.author.name}")
     else:
         print(
-            f"[INFO] {timecode} | Executed {executed_command} command by {context.author} in DMs")
+            f"[INFO] {timecode} | Executed {executed_command} command by {context.author.name} in DMs")
 
 
 @bot.event
