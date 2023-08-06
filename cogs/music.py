@@ -33,6 +33,19 @@ class Music(commands.Cog, name="music"):
             node = wavelink.NodePool.get_node()
             player = node.get_player(after.channel.guild)
             voice = after.channel.guild.voice_client
+            time = 0
+            while True:
+                await asyncio.sleep(1)
+                time = time + 1
+                if voice.is_playing() and not voice.is_paused():
+                    time = 0
+                if time == 60:
+                    await voice.disconnect()
+                    self.queue.clear()
+                    await player.stop()
+                if not voice.is_connected():
+                    break
+
 
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
@@ -241,27 +254,6 @@ class Music(commands.Cog, name="music"):
         await player.set_volume(volume)
         await context.send(embed=embeds.EmbedBlurple("Music", f"볼륨을 {volume}(으)로 설정하였습니다."))
 
-    # @commands.hybrid_command(name="playnow", aliases=["pn"])
-    # async def play_now_command(self, context: Context, *, search: str):
-    #     try:
-    #         search = await wavelink.YouTubeTrack.search(query=search, return_first=True)
-    #     except:
-    #         return await context.reply(embed=discord.Embed(title="Something went wrong while searching for this track", color=discord.Color.from_rgb(255, 255, 255)))
-
-    #     node = wavelink.NodePool.get_node()
-    #     player = node.get_player(context.guild)
-
-    #     if not context.voice_client:
-    #         vc: wavelink.Player = await context.author.voice.channel(cls=wavelink.Player)
-    #         await player.connect(context.author.voice.channel)
-    #     else:
-    #         vc: wavelink.Player = context.voice_client
-
-    #     try:
-    #         await vc.play(search)
-    #     except:
-    #         return await context.reply(embed=discord.Embed(title="Something went wrong while playing this track", color=discord.Color.from_rgb(255, 255, 255)))
-    #     await context.reply(embed=discord.Embed(title=f"Playing: **{search.title}** Now", color=discord.Color.from_rgb(255, 255, 255)))
 
     @commands.hybrid_command(
         name="nowplaying",
@@ -415,27 +407,6 @@ class Music(commands.Cog, name="music"):
             return await context.reply(embed=embed)
         else:
             return await context.reply(embed=embeds.EmbedRed("Music", "재생목록이 비어있습니다."))
-        # else:
-        #     try:
-        #         track = await wavelink.YoutubeTrack.search(query=search, return_first=True)
-        #     except:
-        #         return await context.reply(embed=embeds.EmbedRed("Music", "검색 중 문제가 발생하였습니다."))
-
-        #     if not context.voice_client:
-        #         vc: wavelink.Player = await context.author.voice.channel(cls=wavelink.Player)
-        #         await player.connect(context.author.voice.channel)
-        #     else:
-        #         vc: wavelink.Player = context.voice_client
-
-        #     if not vc.isp_playing():
-        #         try:
-        #             await vc.play(track)
-        #         except:
-        #             return await context.reply(embed=embeds.EmbedRed("Music", "재생 중 문제가 발생하였습니다."))
-        #     else:
-        #         self.queue.append(track)
-
-        #     await context.reply(embed=embeds.EmbedBlurple("Music", f"{track.title}을(를) 재생목록에 추가하였습니다."))
 
     @commands.hybrid_command(
         name='loop',
