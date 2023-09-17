@@ -379,9 +379,9 @@ class Music(commands.Cog, name="music"):
                 name="링크", value=f"[클릭]({next_track.uri})", inline=True)
             await context.channel.send(embed=embed)
         else:
+            await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`을(를) 건너뜁니다.\n다음에 재생할 노래가 없어 재생을 중지합니다."))
             self.queue.clear()
             await player.stop()
-            await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`을(를) 건너뜁니다.\n다음에 재생할 노래가 없어 재생을 중지합니다."))
 
     @commands.hybrid_command(
         name="queue",
