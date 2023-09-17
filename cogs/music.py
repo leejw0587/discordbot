@@ -65,10 +65,10 @@ class Music(commands.Cog, name="music"):
             try:
                 if self.repeatMode == "ONE":
                     await player.play(track)
-                elif self.repeatMode == "ALL":
-                    if len(self.queue) == self.queue:
-                        await player.play()
-                        self.queue.count
+                # elif self.repeatMode == "ALL":
+                #     if len(self.queue) == self.queue:
+                #         await player.play()
+                #         self.queue.count
             except:
                 return await channel.send(embed=embeds.EmbedRed("Music", "재생 도중 문제가 발생하였습니다."))
 
@@ -381,7 +381,7 @@ class Music(commands.Cog, name="music"):
         else:
             self.queue.clear()
             await player.stop()
-            await context.reply(embed=embeds.EmbedRed("Music", "다음에 재생할 노래가 없습니다."))
+            await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`을(를) 건너뜁니다.\n다음에 재생할 노래가 없어 재생을 중지합니다."))
 
     @commands.hybrid_command(
         name="queue",
@@ -407,32 +407,27 @@ class Music(commands.Cog, name="music"):
         else:
             return await context.reply(embed=embeds.EmbedRed("Music", "재생목록이 비어있습니다."))
 
-    # @commands.hybrid_command(
-    #     name='loop',
-    #     description='현재 노래에 대해 반복재생 여부를 설정합니다.'
-    # )
-    # @app_commands.describe(type='반복 종류')
-    # async def loop(self, context: Context, type: typing.Literal['한곡', '전체']):
-    #     node = wavelink.NodePool.get_node()
-    #     player = node.get_player(context.guild)
+    @commands.hybrid_command(
+        name='loop',
+        description='현재 노래에 대해 반복재생 여부를 설정합니다.'
+    )
+    async def loop(self, context: Context):
+        node = wavelink.NodePool.get_node()
+        player = node.get_player(context.guild)
 
-    #     if player.track == None:
-    #         return await context.reply(embed=embeds.EmbedRed("Music", "재생중인 노래가 없습니다."))
-    #     else:
-    #         try:
-    #             if self.repeat == True:
-    #                 self.repeat = False
-    #                 await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`의 반복재생을 종료합니다."))
-    #             elif type == "한곡":
-    #                 self.repeat = True
-    #                 self.repeatMode = "ONE"
-    #                 await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`을(를) 반복재생합니다."))
-    #             elif type == "전체":
-    #                 self.repeat = True
-    #                 self.repeatMode = "ALL"
-    #                 await context.reply(embed=embeds.EmbedBlurple("Music", f"전체 재생 목록을 반복재생합니다."))
-    #         except:
-    #             return await context.reply(embed=embeds.EmbedRed("Music", "반복재생 중 문제가 발생하였습니다."))
+        if player.track == None:
+            return await context.reply(embed=embeds.EmbedRed("Music", "재생중인 노래가 없습니다."))
+        else:
+            try:
+                if self.repeat == True:
+                    self.repeat = False
+                    await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`의 반복재생을 종료합니다."))
+                else:
+                    self.repeat = True
+                    self.repeatMode = "ONE"
+                    await context.reply(embed=embeds.EmbedBlurple("Music", f"`{player.track.title}`을(를) 반복재생합니다."))
+            except:
+                return await context.reply(embed=embeds.EmbedRed("Music", "반복재생 중 문제가 발생하였습니다."))
 
     @commands.hybrid_command(
         name='remove',

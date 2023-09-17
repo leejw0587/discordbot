@@ -70,19 +70,19 @@ class General(commands.Cog, name="general"):
             msg_list = [str(random.randint(1, 100))+"m 깊이", "기름줄줄", "👃"]
             return await message.channel.send(random.choice(msg_list))
 
-        else:
-            if message.channel.id == 1081478211403272264:
-                async with message.channel.typing():
-                    response = openai.ChatCompletion.create(
-                        model="gpt-3.5-turbo",
-                        messages=[
-                            {"role": "system",
-                             "content": "You are a friendly chatbot. Your name is '우지한'."},
-                            {"role": "user", "content": message.content},
-                        ]
-                    )
-                    botAnswer = response['choices'][0]['message']['content']
-                    return await message.channel.send(botAnswer)
+        # else:
+        #     if message.channel.id == 1081478211403272264:
+        #         async with message.channel.typing():
+        #             response = openai.ChatCompletion.create(
+        #                 model="gpt-3.5-turbo",
+        #                 messages=[
+        #                     {"role": "system",
+        #                      "content": "You are a friendly chatbot. Your name is '우지한'."},
+        #                     {"role": "user", "content": message.content},
+        #                 ]
+        #             )
+        #             botAnswer = response['choices'][0]['message']['content']
+        #             return await message.channel.send(botAnswer)
 
     @commands.hybrid_command(
         name="help",
