@@ -1,9 +1,6 @@
 {
   "prefix": "/",
-  "token": "MTA3MDk0NjI5NzQ3MDc3OTQxMg.GWaqS5.dhQsy_ESIrQI2rVLmSgdDbc9tYwDPt6hq5h4Ig",
-  "openai_api_key": "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",
   "permissions": "8",
-  "application_id": "1070946297470779412",
   "sync_commands_globally": true,
   "owners": [
     424546094182039552

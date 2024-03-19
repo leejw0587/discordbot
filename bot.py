@@ -10,6 +10,7 @@ import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot, Context
 from datetime import datetime
+from dotenv import load_dotenv
 
 import exceptions
 
@@ -18,6 +19,10 @@ if not os.path.isfile("config.json"):
 else:
     with open("config.json") as file:
         config = json.load(file)
+
+load_dotenv()
+token = os.environ.get('token')
+
 
 """	
 bot intents:
@@ -185,4 +190,4 @@ async def load_cogs() -> None:
 
 
 asyncio.run(load_cogs())
-bot.run(config["token"])
+bot.run(token)

@@ -6,7 +6,6 @@ import datetime
 import asyncio
 import typing
 import requests
-import openai
 import re
 
 import aiohttp
@@ -21,7 +20,6 @@ from helpers import checks
 class General(commands.Cog, name="general"):
     def __init__(self, bot):
         self.bot = bot
-        openai.api_key = self.bot.config["openai_api_key"]
 
     @commands.Cog.listener()
     async def on_message(self, message) -> None:
