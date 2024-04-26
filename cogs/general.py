@@ -33,40 +33,8 @@ class General(commands.Cog, name="general"):
             return await message.channel.send(msg)
 
         elif "얼굴" in message.content or "면상" in message.content:
-            if message.author.id == 612252642734899210:  # 우지환
-                msg = f"모공 {random.randint(3, 1000)}미터"
-            elif message.author.id == 476971304059142145:  # 박제희
-                msg = "외국인"
-            elif message.author.id == 682994068103757840:  # 박경덕
-                msg = "아 어쩌라고"
-            elif message.author.id == 822839709109059604:  # 이동건
-                msg = "강남"
-            elif message.author.id == 389354491410907157:  # 정인철
-                msg = f"입술 {random.randint(3, 1000)}미터"
-            elif message.author.id == 424546094182039552:  # 이지원
-                msg = "거인"
-            else:
-                msg = random.choice(react)
+            msg = random.choice(react)
             return await message.channel.send(msg)
-
-        elif "키" in message.content:
-            if message.author.id == 822839709109059604:  # 이동건
-                msg = "166cm"
-                return await message.channel.send(msg)
-
-        elif "몸무게" in message.content:
-            if message.author.id == 822839709109059604:  # 이동건
-                msg = "70kg"
-                return await message.channel.send(msg)
-
-        elif "몸매" in message.content:
-            if message.author.id == 822839709109059604:  # 이동건
-                msg = "166cm에 70kg"
-                return await message.channel.send(msg)
-
-        elif "모공" in message.content:
-            msg_list = [str(random.randint(1, 100))+"m 깊이", "기름줄줄", "👃"]
-            return await message.channel.send(random.choice(msg_list))
 
         # else:
         #     if message.channel.id == 1081478211403272264:
@@ -130,49 +98,49 @@ class General(commands.Cog, name="general"):
         )
         await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="급식",
-        description="급식을 알려줍니다."
-    )
-    async def 급식(self, context: Context, date: typing.Literal['오늘', '내일', '모레']):
-        today = datetime.datetime.today()
+    # @commands.hybrid_command(
+    #     name="급식",
+    #     description="급식을 알려줍니다."
+    # )
+    # async def 급식(self, context: Context, date: typing.Literal['오늘', '내일', '모레']):
+    #     today = datetime.datetime.today()
 
-        if date == '오늘':
-            date = today.strftime('%Y%m%d')
-            date_frmt = today.strftime('%Y-%m-%d')
-        elif date == '내일':
-            tomorrow = today + datetime.timedelta(days=1)
-            date = tomorrow.strftime('%Y%m%d')
-            date_frmt = tomorrow.strftime('%Y-%m-%d')
-        elif date == '모레':
-            tomorrow = today + datetime.timedelta(days=2)
-            date = tomorrow.strftime('%Y%m%d')
-            date_frmt = tomorrow.strftime('%Y-%m-%d')
+    #     if date == '오늘':
+    #         date = today.strftime('%Y%m%d')
+    #         date_frmt = today.strftime('%Y-%m-%d')
+    #     elif date == '내일':
+    #         tomorrow = today + datetime.timedelta(days=1)
+    #         date = tomorrow.strftime('%Y%m%d')
+    #         date_frmt = tomorrow.strftime('%Y-%m-%d')
+    #     elif date == '모레':
+    #         tomorrow = today + datetime.timedelta(days=2)
+    #         date = tomorrow.strftime('%Y%m%d')
+    #         date_frmt = tomorrow.strftime('%Y-%m-%d')
 
-        try:
-            url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=585fb4c9578b448496b2977b7e51fa24&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=D10&SD_SCHUL_CODE=7240061" + \
-                "&MLSV_YMD=" + date
-            response = requests.get(url)
-            contents = response.text
+    #     try:
+    #         url = "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=585fb4c9578b448496b2977b7e51fa24&Type=json&pIndex=1&pSize=10&ATPT_OFCDC_SC_CODE=D10&SD_SCHUL_CODE=7240061" + \
+    #             "&MLSV_YMD=" + date
+    #         response = requests.get(url)
+    #         contents = response.text
 
-            json_data = json.loads(contents)
-            json_data = json_data['mealServiceDietInfo'][1]['row'][0]['DDISH_NM']
+    #         json_data = json.loads(contents)
+    #         json_data = json_data['mealServiceDietInfo'][1]['row'][0]['DDISH_NM']
 
-            message = json_data.split("<br/>")
+    #         message = json_data.split("<br/>")
 
-            embed = discord.Embed(
-                title=f"`{date_frmt}` 급식 정보",
-                description="\n".join(message),
-                color=discord.Color.greyple()
-            )
-            await context.send(embed=embed)
-        except:
-            embed = discord.Embed(
-                title="Error!",
-                description=f"`{date_frmt}`의 급식 정보를 찾을 수 없습니다.",
-                color=discord.Color.red()
-            )
-            await context.send(embed=embed)
+    #         embed = discord.Embed(
+    #             title=f"`{date_frmt}` 급식 정보",
+    #             description="\n".join(message),
+    #             color=discord.Color.greyple()
+    #         )
+    #         await context.send(embed=embed)
+    #     except:
+    #         embed = discord.Embed(
+    #             title="Error!",
+    #             description=f"`{date_frmt}`의 급식 정보를 찾을 수 없습니다.",
+    #             color=discord.Color.red()
+    #         )
+    #         await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="수온",
