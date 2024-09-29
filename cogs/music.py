@@ -132,6 +132,7 @@ class Music(commands.Cog, name="music"):
             except discord.ClientException:
                 return await context.send(embed=embeds.EmbedRed("Music", "해당 음성 채널에 접속할 수 없습니다."))
                 
+        player.autoplay = wavelink.AutoPlayMode.disabled
             
         if not hasattr(player, "home"):
             player.home = context.channel
@@ -142,9 +143,7 @@ class Music(commands.Cog, name="music"):
         if not tracks:
             return await context.send(embed=embeds.EmbedRed("Music", "노래를 찾을 수 없습니다."))
             
-        player.autoplay = wavelink.AutoPlayMode.disabled
-        player.inactive_timeout = 60
-
+                
         if isinstance(tracks, wavelink.Playlist):
             added: int = await player.queue.put_wait(tracks)
             await context.send(embed=embeds.EmbedBlurple("Music", f"플레이리스트 **`{tracks.name}`** ({added} 곡)을(를) 재생목록에 추가하였습니다."))
@@ -155,7 +154,7 @@ class Music(commands.Cog, name="music"):
 
         if not player.playing:
             await player.play(player.queue.get(), volume=30)
-
+        player.inactive_timeout = 60
 
 
     @commands.hybrid_command(
