@@ -139,7 +139,7 @@ class Music(commands.Cog, name="music"):
         elif player.home != context.channel:
             return await context.send(embed=embeds.EmbedRed("Music", f"{player.home.mention}에서만 노래를 재생할 수 있습니다."))
         
-        tracks: wavelink.Search = await wavelink.Playable.search(query)
+        tracks: wavelink.Search = await wavelink.Playable.search(query, source=TrackSource.YouTube)
         if not tracks:
             return await context.send(embed=embeds.EmbedRed("Music", "노래를 찾을 수 없습니다."))
             
