@@ -184,11 +184,6 @@ class Music(commands.Cog, name="music"):
 
         await context.send(embed=embeds.EmbedBlurple("Music", f"`{player.current.title}`을(를) 건너뜁니다."))
         await player.skip(force=True)
-        
-        try:
-            await player.play(player.queue.get(), volume=30)
-        except:
-            pass
 
         
     @commands.hybrid_command(
